@@ -18,10 +18,16 @@ install-tools: ## Install CLI the tools
 	@test -s $(KIND) || curl -sSLo $(KIND) https://kind.sigs.k8s.io/dl/v$(KIND_VERSION)/kind-linux-amd64
 	@chmod +x $(KIND)
 
+# Cluster management
 .PHONY: create-cluster
-create-cluster: # Create a local clsuter
+create-cluster: ## Create a local clsuter
 	@echo "Creating a development cluster============================================================"
 	@$(KIND) create cluster --image kindest/node:v$(KUBERNETES_VERSION) --name=ow 2>&1 | grep -v "already exists" || true
+
+.PHONY: delete-cluster
+delete-cluster: ## Delete the local cluster
+	@echo "Deleting the local cluster================================================================="
+	@kind delete cluster --name=ow
 
 .PHONY: help
 help:
